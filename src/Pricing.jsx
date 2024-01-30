@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -13,19 +14,10 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import MobileStepper from '@mui/material/MobileStepper';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const tiers = [
   {
@@ -71,6 +63,21 @@ const tiers = [
 const defaultTheme = createTheme();
 
 export default function Pricing() {
+    const theme = useTheme();
+    const [coins, setCoins] = useState(0);
+    const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setCoins(coins + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setCoins(coins - 1);
+  };
+
+    
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -83,8 +90,10 @@ export default function Pricing() {
           align="center"
           color="text.primary"
           gutterBottom
+          fontFamily='Silkscreen, sans-serif'
+          border='solid 1px'
         >
-          Pricing
+          INCERT COINS: {coins}
         </Typography>
         <Typography variant="h5" align="center" color="text.secondary" component="p">
           Quickly build an effective pricing table for your potential customers with
@@ -150,14 +159,40 @@ export default function Pricing() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant}>
-                    {tier.buttonText}
-                  </Button>
+                  
                 </CardActions>
               </Card>
             </Grid>
           ))}
         </Grid>
+        <MobileStepper
+      variant="progress"
+      steps={100}
+      position="static"
+      activeStep={activeStep}
+      sx={{ maxWidth: 700, flexGrow: 1 }}
+      
+      nextButton={
+        <Button size="small" onClick={handleNext} disabled={activeStep === 100}>
+          Next
+          {theme.direction === 'rtl' ? (
+            <KeyboardArrowLeft />
+          ) : (
+            <KeyboardArrowRight />
+          )}
+        </Button>
+      }
+      backButton={
+        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+          {theme.direction === 'rtl' ? (
+            <KeyboardArrowRight />
+          ) : (
+            <KeyboardArrowLeft />
+          )}
+          Back
+        </Button>
+      }
+    />
       </Container>
     </ThemeProvider>
   );

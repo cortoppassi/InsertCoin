@@ -7,7 +7,7 @@ export default function() {
   return (
     <Router>
         <Routes>
-            {/* <Route path="/" element={<InsertCoin/>}></Route> */}
+            <Route path="/insert" element={<InsertCoin/>}></Route>
             <Route path="/" element={<Pricing/>}></Route>
         </Routes>
     </Router>
