@@ -25,20 +25,11 @@ const InsertCoin = () => {
     // Adicione mais lógica aqui, se necessário
   };
 
-  const handleButtonClick = (buttonIndex) => {
-    // Lógica para lidar com o clique nos botões
-    console.log(`Botão ${buttonIndex + 1} clicado!`);
-  };
-
   return (
     <div>
-      <h1>Fliperama</h1>
-      <div>
-      <h2 style={{ fontFamily: 'Silkscreen, sans-serif' }}>INCERT COINS: {coins}</h2>
-
-        <button onClick={handleInsertCoin}>Inserir Ficha</button>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <h1 style={{ fontFamily: 'Silkscreen, sans-serif', border: 'solid 1px' }}>INCERT COINS: {coins}</h1>
+      
+      <div style={{ display: 'flex', alignItems: 'center', border: 'solid 1px'}}>
         {/* Alavanca */}
         <div
           style={{
@@ -75,7 +66,7 @@ const InsertCoin = () => {
             {[...Array(3)].map((_, index) => (
               <button
                 key={index}
-                onClick={() => handleButtonClick(index)}
+                onClick={() => handleInsertCoin(index)}
                 style={{
                   width: '40px',
                   height: '40px',
@@ -91,7 +82,7 @@ const InsertCoin = () => {
             {[...Array(3)].map((_, index) => (
               <button
                 key={index + 3}
-                onClick={() => handleButtonClick(index + 3)}
+                onClick={() => handleInsertCoin(index)}
                 style={{
                   width: '40px',
                   height: '40px',
