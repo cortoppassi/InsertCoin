@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -8,70 +8,39 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
 import StarIcon from "@mui/icons-material/StarBorder";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import MobileStepper from "@mui/material/MobileStepper";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-
-const tiers = [
-  {
-    title: "Free",
-    price: "0",
+const tiers = Array.from({ length: 100 }, (_, i) => i + 1).map((number) => ({
+    title: `Plano ${number}`,
+    price: number,
     description: [
-      "10 users included",
-      "2 GB of storage",
-      "Help center access",
-      "Email support",
+      `${number} usuários incluídos`,
+      `${number} GB de armazenamento`,
+      "Acesso ao centro de ajuda",
+      "Suporte por e-mail",
     ],
-    buttonText: "Sign up for free",
+    buttonText: `Inscreva-se por ${number}`,
     buttonVariant: "outlined",
-  },
-  {
-    title: "Pro",
-    subheader: "Most popular",
-    price: "15",
-    description: [
-      "20 users included",
-      "10 GB of storage",
-      "Help center access",
-      "Priority email support",
-    ],
-    buttonText: "Get started",
-    buttonVariant: "contained",
-  },
-  {
-    title: "Enterprise",
-    price: "30",
-    description: [
-      "50 users included",
-      "30 GB of storage",
-      "Help center access",
-      "Phone & email support",
-    ],
-    buttonText: "Contact us",
-    buttonVariant: "outlined",
-  },
-];
+  }));
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-
 export default function Pricing() {
-    const settings = {
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3, // Número de cards a serem exibidos ao mesmo tempo
-        slidesToScroll: 1,
-      };
+    const sliderRef = useRef(null);
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3, // Número de cards a serem exibidos ao mesmo tempo
+    slidesToScroll: 1,
+  };
 
   const theme = useTheme();
   const [coins, setCoins] = useState(0);
@@ -80,11 +49,13 @@ export default function Pricing() {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setCoins(coins + 1);
+    sliderRef.current.slickNext();
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
     setCoins(coins - 1);
+    sliderRef.current.slickPrev();
   };
 
   return (
@@ -108,6 +79,7 @@ export default function Pricing() {
           gutterBottom
           fontFamily="Silkscreen, sans-serif"
           border="solid 1px"
+          sx={{ whiteSpace: "nowrap" }}
         >
           INCERT COINS: {coins}
         </Typography>
@@ -122,63 +94,79 @@ export default function Pricing() {
           little customization.
         </Typography>
       </Container>
-      {/* End hero unit */}
-      <Container maxWidth="md" component="main">
-      <Slider {...settings}>
-      {tiers.map((tier) => (
-        <div key={tier.title} style={{ display: 'flex', justifyContent: 'center' }}>
-          <Card sx={{ maxWidth: 345, minWidth: 250, width: '100%' }}>
-            <CardHeader
-              title={tier.title}
-              subheader={tier.subheader}
-              titleTypographyProps={{ align: 'center' }}
-              action={tier.title === 'Pro' ? <StarIcon /> : null}
-              subheaderTypographyProps={{ align: 'center' }}
-              sx={{
-                backgroundColor: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[200]
-                    : theme.palette.grey[700],
-              }}
-            />
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', mb: 2 }}>
-                <Typography component="h2" variant="h3" color="text.primary">
-                  ${tier.price}
-                </Typography>
-                <Typography variant="h6" color="text.secondary">
-                  /mo
-                </Typography>
-              </Box>
-              <ul>
-                {tier.description.map((line) => (
-                  <Typography
-                    component="li"
-                    variant="subtitle1"
-                    align="center"
-                    key={line}
-                  >
-                    {line}
-                  </Typography>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      ))}
-    </Slider>
 
+      <Container maxWidth="md" component="main">
+      <Slider ref={(slider) => (sliderRef.current = slider)} {...settings}>
+          {tiers.map((tier) => (
+            <div
+              key={tier.title}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Card sx={{ maxWidth: 345, minWidth: 250, width: "90%" }}>
+                <CardHeader
+                  title={tier.title}
+                  subheader={tier.subheader}
+                  titleTypographyProps={{ align: "center" }}
+                  action={tier.title === "Pro" ? <StarIcon /> : null}
+                  subheaderTypographyProps={{ align: "center" }}
+                  sx={{
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === "light"
+                        ? theme.palette.grey[200]
+                        : theme.palette.grey[700],
+                  }}
+                />
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "baseline",
+                      mb: 2,
+                    }}
+                  >
+                    <Typography
+                      component="h2"
+                      variant="h3"
+                      color="text.primary"
+                    >
+                      ${coins}
+                    </Typography>
+                    <Typography variant="h6" color="text.secondary">
+                      /mo
+                    </Typography>
+                  </Box>
+                  <ul>
+                    {tier.description.map((line) => (
+                      <Typography
+                        component="li"
+                        variant="subtitle1"
+                        align="center"
+                        key={line}
+                      >
+                        {line}
+                      </Typography>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </Slider>
+      </Container>
+
+      <Container>
         <MobileStepper
           variant="progress"
           steps={100}
           position="static"
           activeStep={activeStep}
-          sx={{ maxWidth: 700, flexGrow: 1 }}
+          sx={{ width: "100%", flexGrow: 1 }}
           nextButton={
             <Button
               size="small"
               onClick={handleNext}
-              disabled={activeStep === 100}
+              disabled={activeStep === 99}
             >
               Next
               {theme.direction === "rtl" ? (
