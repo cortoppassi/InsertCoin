@@ -19,22 +19,22 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const tiers = Array.from({ length: 100 }, (_, i) => i + 1).map((number) => ({
-    title: `Plano ${number}`,
-    price: number,
-    description: [
-      `${number} usuários incluídos`,
-      `${number} GB de armazenamento`,
-      "Acesso ao centro de ajuda",
-      "Suporte por e-mail",
-    ],
-    buttonText: `Inscreva-se por ${number}`,
-    buttonVariant: "outlined",
-  }));
+const tiers = Array.from({ length: 99 }, (_, i) => i + 1).map((number) => ({
+  title: `Plano ${number}`,
+  price: number,
+  description: [
+    `${number} usuários incluídos`,
+    `${number} GB de armazenamento`,
+    "Acesso ao centro de ajuda",
+    "Suporte por e-mail",
+  ],
+  buttonText: `Inscreva-se por ${number}`,
+  buttonVariant: "outlined",
+}));
 
 const defaultTheme = createTheme();
 export default function Pricing() {
-    const sliderRef = useRef(null);
+  const sliderRef = useRef(null);
   const settings = {
     infinite: true,
     speed: 500,
@@ -96,7 +96,7 @@ export default function Pricing() {
       </Container>
 
       <Container maxWidth="md" component="main">
-      <Slider ref={(slider) => (sliderRef.current = slider)} {...settings}>
+        <Slider ref={(slider) => (sliderRef.current = slider)} {...settings}>
           {tiers.map((tier) => (
             <div
               key={tier.title}
