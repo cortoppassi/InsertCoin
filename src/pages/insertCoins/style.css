@@ -103,10 +103,15 @@ body {
   display: inline-block;
   padding: 8px 20px;
   margin-top: 15px;
-  background-attachment: #fff;
-  color: #d4c1c1;
+  background-color: #4CAF50;
+  color: #fff;
   border-radius: 20px;
   text-decoration: none;
   font-weight: 500;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.container .card .content a:hover {
+  background-color: #45a049;
+  color: #fff;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
 }
